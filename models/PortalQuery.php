@@ -40,6 +40,18 @@ class PortalQuery extends \yii\db\ActiveQuery
 
     public function portalsByInvolved(Player $owner)
     {
-        return $this->andWhere("[[currOwnerId]]={$owner->id}");
+        $this->orWhere("[[currOwnerId]]={$owner->id}");
+        $this->orWhere("[[res1OwnerId]]={$owner->id}");
+        $this->orWhere("[[res2OwnerId]]={$owner->id}");
+        $this->orWhere("[[res3OwnerId]]={$owner->id}");
+        $this->orWhere("[[res4OwnerId]]={$owner->id}");
+        $this->orWhere("[[res5OwnerId]]={$owner->id}");
+        $this->orWhere("[[res6OwnerId]]={$owner->id}");
+        $this->orWhere("[[res7OwnerId]]={$owner->id}");
+        $this->orWhere("[[res8OwnerId]]={$owner->id}");
+        $this->orWhere("[[mod1OwnerId]]={$owner->id}");
+        $this->orWhere("[[mod2OwnerId]]={$owner->id}");
+        $this->orWhere("[[mod3OwnerId]]={$owner->id}");
+        return $this->orWhere("[[mod4OwnerId]]={$owner->id}");
     }
 }
