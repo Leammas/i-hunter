@@ -32,4 +32,14 @@ class PortalQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    public function portalsByOwner(Player $owner)
+    {
+        return $this->andWhere("[[currOwnerId]]={$owner->id}");
+    }
+
+    public function portalsByInvolved(Player $owner)
+    {
+        return $this->andWhere("[[currOwnerId]]={$owner->id}");
+    }
 }

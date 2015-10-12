@@ -7,6 +7,7 @@ class m151007_173532_alter_portal_fk_owner extends Migration
 
     public function safeUp()
     {
+        $this->db->createCommand('ALTER TABLE `player` CHANGE `agentId` `agentId` VARCHAR(255) CHARSET utf8 COLLATE utf8_unicode_ci NULL; ')->execute();
         $this->addColumn('{{%portal}}', 'currOwnerId', \yii\db\Schema::TYPE_INTEGER);
         $this->addColumn('{{%portal}}', 'res1OwnerId', \yii\db\Schema::TYPE_INTEGER);
         $this->addColumn('{{%portal}}', 'res2OwnerId', \yii\db\Schema::TYPE_INTEGER);
