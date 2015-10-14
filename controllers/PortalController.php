@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use mirocow\yandexmaps\Map;
+use mirocow\yandexmaps\objects\Placemark;
 use Yii;
 use app\models\Portal;
 use app\models\PortalSearch;
@@ -23,9 +25,28 @@ class PortalController extends Controller
         $searchModel = new PortalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $mark = new Placemark([55.7372, 37.6066], ['iconContent' => 'lalam', 'balloonContent' => 'lam'], ['preset' => 'islands#blueStretchyIcon']);
+        $map = new Map('yandex_map', [
+            'center' => [55.7372, 37.6066],
+            'zoom' => 10,
+            // Enable zoom with mouse scroll
+            'behaviors' => array('default', 'scrollZoom'),
+            'type' => "yandex#map",
+        ],
+            [
+                // Permit zoom only fro 9 to 11
+                'controls' => [
+                    "new ymaps.control.SmallZoomControl()",
+                    "new ymaps.control.TypeSelector(['yandex#map', 'yandex#satellite'])",
+                ],
+            ]
+        );
+        $map->addObject($mark);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'map' => $map
         ]);
     }
 
