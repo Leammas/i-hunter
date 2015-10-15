@@ -36,7 +36,15 @@ $config = [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
+                    'logFile' => '@runtime/logs/site.log',
+                    'categories' => ['site'],
+                    'except' => ['application'],
                     'levels' => ['error', 'warning', 'info'],
+                    'logVars' => [],
+                ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['error', 'warning'],
                 ],
             ],
         ],

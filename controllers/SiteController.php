@@ -69,13 +69,13 @@ class SiteController extends Controller
             }
             else
             {
-                Yii::info('Попытка входа с неразрешенного аккаунта:' . $email . var_export($userAttributes, true));
+                Yii::info('Попытка входа с неразрешенного аккаунта:' . $email . var_export($userAttributes, true), 'site');
                 throw new UnauthorizedHttpException('You shall not pass!');
             }
         }
         else
         {
-            Yii::error('Нет данных аккаунта в ответе OAuth:' . var_export($userAttributes, true));
+            Yii::error('Нет данных аккаунта в ответе OAuth:' . var_export($userAttributes, true), 'site');
             throw new UnauthorizedHttpException('OAuth service error');
         }
     }

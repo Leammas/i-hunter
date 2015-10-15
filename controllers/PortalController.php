@@ -39,6 +39,7 @@ class PortalController extends Controller
      */
     public function actionIndex()
     {
+        Yii::info("Пользователь на странице поиска порталов " . Yii::$app->user->identity->email, 'site');
         $searchModel = new PortalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -84,6 +85,7 @@ class PortalController extends Controller
      */
     public function actionView($id)
     {
+        Yii::info("Просмотр портала {$id} пользователем " . Yii::$app->user->identity->email, 'site');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
