@@ -3,7 +3,8 @@
 $params = require(__DIR__ . '/params.php');
 
 $config = [
-    'id' => 'portaller',
+    'id' => 'ingress-hunter',
+    'name' => 'ingress-hunter',
     'basePath' => dirname(__DIR__),
     'homeUrl' => '/',
     'bootstrap' => ['log'],
@@ -46,6 +47,16 @@ $config = [
             'enableStrictParsing' => false,
             'baseUrl' => '/',
             'rules' => [
+            ],
+        ],
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'google' => [
+                    'class' => 'yii\authclient\clients\GoogleOAuth',
+                    'clientId' => '579439761294-c5tbnj3p3kdlnuvt5h27r1ood5l134ja.apps.googleusercontent.com',
+                    'clientSecret' => 'pme9Dxl6NKuo6AOCUuvmbRQs',
+                ],
             ],
         ],
         'yandexMapsApi' => [

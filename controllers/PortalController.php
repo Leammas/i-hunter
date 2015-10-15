@@ -16,6 +16,21 @@ use yii\web\NotFoundHttpException;
 class PortalController extends Controller
 {
 
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ]
+        ];
+    }
+
     /**
      * Lists all Portal models.
      * @return mixed
