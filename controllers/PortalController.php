@@ -7,6 +7,8 @@ use mirocow\yandexmaps\objects\Placemark;
 use Yii;
 use app\models\Portal;
 use app\models\PortalSearch;
+use yii\filters\AccessControl;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -40,9 +42,10 @@ class PortalController extends Controller
         $searchModel = new PortalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $mark = new Placemark([55.7372, 37.6066], ['iconContent' => 'lalam', 'balloonContent' => 'lam'], ['preset' => 'islands#blueStretchyIcon']);
+        $center = [$dataProvider->getModels()[0]->lat, $dataProvider->getModels()[0]->lng];
+
         $map = new Map('yandex_map', [
-            'center' => [55.7372, 37.6066],
+            'center' => $center,
             'zoom' => 10,
             // Enable zoom with mouse scroll
             'behaviors' => array('default', 'scrollZoom'),
@@ -56,7 +59,16 @@ class PortalController extends Controller
                 ],
             ]
         );
-        $map->addObject($mark);
+
+        foreach($dataProvider->getModels() as $portal)
+        {
+            /**
+             * @var $portal Portal
+             */
+            $mark = new Placemark([$portal->lat, $portal->lng], ['iconContent' => $portal->title, 'balloonContent' => Html::img($portal->image)], ['preset' => 'islands#blueStretchyIcon']);
+            $map->addObject($mark);
+        }
+        unset($portal, $mark);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
