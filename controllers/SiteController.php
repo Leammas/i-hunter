@@ -2,13 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
 use yii\authclient\ClientInterface;
 use yii\web\Response;
+use yii\web\UnauthorizedHttpException;
 
 class SiteController extends Controller
 {
@@ -53,14 +54,31 @@ class SiteController extends Controller
      *
      * @param ClientInterface $client
      * @return boolean|Response
+     * @throws UnauthorizedHttpException
      */
     public function oAuthSuccess($client) {
         // get user data from client
         $userAttributes = $client->getUserAttributes();
-        var_dump($userAttributes); die;
-        // do some thing with user data. for example with $userAttributes['email']
+        if (isset($userAttributes['emails']) && isset($userAttributes['emails'][0]) && isset($userAttributes['emails'][0]['value']))
+        {
+            $email = $userAttributes['emails'][0]['value'];
+            $user = User::find()->byEmail($email)->one();
+            if ($user instanceof User)
+            {
+                return Yii::$app->user->login($user, 3600*24*30);
+            }
+            else
+            {
+                Yii::info('Попытка входа с неразрешенного аккаунта:' . $email . var_export($userAttributes, true));
+                throw new UnauthorizedHttpException('You shall not pass!');
+            }
+        }
+        else
+        {
+            Yii::error('Нет данных аккаунта в ответе OAuth:' . var_export($userAttributes, true));
+            throw new UnauthorizedHttpException('OAuth service error');
+        }
     }
-
 
     public function actionIndex()
     {
@@ -73,13 +91,7 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        return $this->render('login');
     }
 
     public function actionLogout()
