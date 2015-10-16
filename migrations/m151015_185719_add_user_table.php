@@ -19,7 +19,7 @@ class m151015_185719_add_user_table extends Migration
             ]);
 
             $this->createIndex('email_unique', '{{%user}}', 'email', true);
-            $this->createIndex('token_unique', '{{%user}}', 'token', true);
+            $this->createIndex('key_unique', '{{%user}}', 'key', true);
         }
     }
 
