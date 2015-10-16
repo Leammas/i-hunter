@@ -4,7 +4,7 @@ use yii\bootstrap\Html;
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Ingress hunter';
 ?>
 <div class="row">
     <div class="col-sm-4">

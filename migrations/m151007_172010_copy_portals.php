@@ -8,6 +8,12 @@ class m151007_172010_copy_portals extends Migration
     {
         $this->db->createCommand('CREATE TABLE {{%portal}} LIKE portals')->execute();
         $this->db->createCommand('INSERT {{%portal}} SELECT * FROM portals')->execute();
+        try {
+            $this->addPrimaryKey('p', '{{%portal}}', ['[[id]]']);
+        } catch (\Exception $e)
+        {
+            // Ну и х@й с ним
+        }
     }
 
     public function down()
