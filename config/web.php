@@ -69,6 +69,7 @@ $config = [
         ],
         'yandexMapsApi' => [
             'class' => 'mirocow\yandexmaps\Api',
+            'protocol' => 'https'
         ]
     ],
     'params' => $params,
