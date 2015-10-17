@@ -6,8 +6,8 @@ class m151007_172010_copy_portals extends Migration
 {
     public function safeUp()
     {
-        $this->db->createCommand('CREATE TABLE {{%portal}} LIKE portals')->execute();
-        $this->db->createCommand('INSERT {{%portal}} SELECT * FROM portals')->execute();
+        $this->db->createCommand('CREATE TABLE {{%portal}} LIKE smurfportal')->execute();
+        $this->db->createCommand('INSERT {{%portal}} SELECT * FROM smurfportal')->execute();
         try {
             $this->addPrimaryKey('p', '{{%portal}}', ['[[id]]']);
         } catch (\Exception $e)
