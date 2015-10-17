@@ -71,6 +71,9 @@ class PortalSearch extends Portal
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 50,
+            ],
         ]);
 
         $dataProvider->sort->attributes['currOwner'] = [
