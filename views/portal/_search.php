@@ -15,10 +15,6 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'lat') ?>
-
-    <?= $form->field($model, 'lng') ?>
-
     <?= $form->field($model, 'title') ?>
 
     <?= $form->field($model, 'currOwner') ?>
