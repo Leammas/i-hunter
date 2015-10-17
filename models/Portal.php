@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%portal}}".
@@ -197,105 +198,9 @@ class Portal extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMod4Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'mod4OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getCurrOwner()
     {
         return $this->hasOne(Player::className(), ['id' => 'currOwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMod1Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'mod1OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMod2Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'mod2OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMod3Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'mod3OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRes1Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'res1OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRes2Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'res2OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRes3Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'res3OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRes4Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'res4OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRes5Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'res5OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRes6Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'res6OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRes7Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'res7OwnerId']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRes8Owner()
-    {
-        return $this->hasOne(Player::className(), ['id' => 'res8OwnerId']);
     }
 
     /**
@@ -305,5 +210,21 @@ class Portal extends \yii\db\ActiveRecord
     public static function find()
     {
         return new PortalQuery(get_called_class());
+    }
+
+    /**
+     * @return float Time passed since capture
+     */
+    public function getTimePassed()
+    {
+        return ceil(((time() - $this->dateCapture) / 3600) / 24);
+    }
+
+    /**
+     * @return string Essential content
+     */
+    public function getBalloon()
+    {
+        return Yii::$app->view->render('//portal/balloon', ['portal' => $this]);
     }
 }

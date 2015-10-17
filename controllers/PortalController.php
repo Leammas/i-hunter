@@ -11,6 +11,7 @@ use yii\filters\AccessControl;
 use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use app\models\Map as MapModel;
 
 /**
  * PortalController implements the CRUD actions for Portal model.
@@ -42,34 +43,7 @@ class PortalController extends Controller
         Yii::info("Пользователь на странице поиска порталов " . Yii::$app->user->identity->email, 'site');
         $searchModel = new PortalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        $center = [$dataProvider->getModels()[0]->lat, $dataProvider->getModels()[0]->lng];
-
-        $map = new Map('yandex_map', [
-            'center' => $center,
-            'zoom' => 10,
-            // Enable zoom with mouse scroll
-            'behaviors' => array('default', 'scrollZoom'),
-            'type' => "yandex#map",
-        ],
-            [
-                // Permit zoom only fro 9 to 11
-                'controls' => [
-                    "new ymaps.control.SmallZoomControl()",
-                    "new ymaps.control.TypeSelector(['yandex#map', 'yandex#satellite'])",
-                ],
-            ]
-        );
-
-        foreach($dataProvider->getModels() as $portal)
-        {
-            /**
-             * @var $portal Portal
-             */
-            $mark = new Placemark([$portal->lat, $portal->lng], ['iconContent' => $portal->title, 'balloonContent' => Html::img($portal->image)], ['preset' => 'islands#blueStretchyIcon']);
-            $map->addObject($mark);
-        }
-        unset($portal, $mark);
+        $map = new MapModel(['portals' => $dataProvider]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

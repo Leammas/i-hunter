@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
-use mirocow\yandexmaps\Map;
+use app\models\Map;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PortalSearch */
@@ -17,12 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <? echo \mirocow\yandexmaps\Canvas::widget([
-        'htmlOptions' => [
-            'style' => 'height: 400px;',
-        ],
-        'map' => $map,
-    ]); ?>
+    <? echo $map->getMap(); ?>
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
