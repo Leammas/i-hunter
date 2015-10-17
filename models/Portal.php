@@ -69,6 +69,9 @@ use yii\helpers\Html;
  * @property integer $mod2OwnerId
  * @property integer $mod3OwnerId
  * @property integer $mod4OwnerId
+ * @property string $coord
+ * @property float $timePassed
+ * @property string $formattedDateCapture
  *
  * @property Player $mod4Owner
  * @property Player $currOwner
@@ -192,6 +195,9 @@ class Portal extends \yii\db\ActiveRecord
             'mod2OwnerId' => 'Mod2 Owner ID',
             'mod3OwnerId' => 'Mod3 Owner ID',
             'mod4OwnerId' => 'Mod4 Owner ID',
+            'coord' => 'Координата',
+            'timePassed' => 'Дней с захвата',
+            'formattedDateCapture' => 'Дата захвата GMT',
         ];
     }
 
@@ -226,5 +232,15 @@ class Portal extends \yii\db\ActiveRecord
     public function getBalloon()
     {
         return Yii::$app->view->render('//portal/balloon', ['portal' => $this]);
+    }
+
+    public function getCoord()
+    {
+        return $this->lat . ',' . $this->lng;
+    }
+
+    public function getFormattedDateCapture()
+    {
+        return date('c', $this->dateCapture);
     }
 }

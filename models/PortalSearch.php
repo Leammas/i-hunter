@@ -20,12 +20,22 @@ class PortalSearch extends Portal
     public $currOwner;
 
     /**
+     * @var int
+     */
+    public $timePassed;
+
+    /**
+     * @var string
+     */
+    public $formattedDateCapture;
+
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'level', 'resCount', 'res1energy', 'res1level', 'res2energy', 'res2level', 'res3energy', 'res3level', 'res4energy', 'res4level', 'res5energy', 'res5level', 'res6energy', 'res6level', 'res7energy', 'res7level', 'res8energy', 'res8level', 'currOwnerId', 'res1OwnerId', 'res2OwnerId', 'res3OwnerId', 'res4OwnerId', 'res5OwnerId', 'res6OwnerId', 'res7OwnerId', 'res8OwnerId', 'mod1OwnerId', 'mod2OwnerId', 'mod3OwnerId', 'mod4OwnerId'], 'integer'],
+            [['id', 'level', 'resCount', 'res1energy', 'res1level', 'res2energy', 'res2level', 'res3energy', 'res3level', 'res4energy', 'res4level', 'res5energy', 'res5level', 'res6energy', 'res6level', 'res7energy', 'res7level', 'res8energy', 'res8level', 'currOwnerId', 'res1OwnerId', 'res2OwnerId', 'res3OwnerId', 'res4OwnerId', 'res5OwnerId', 'res6OwnerId', 'res7OwnerId', 'res8OwnerId', 'mod1OwnerId', 'mod2OwnerId', 'mod3OwnerId', 'mod4OwnerId', 'timePassed'], 'integer'],
             [['guid', 'lat', 'lng', 'title', 'curr_owner', 'timeUpdated', 'mode1owner', 'mode1name', 'mode1rarity', 'mode2owner', 'mode2name', 'mode2rarity', 'mode3owner', 'mode3name', 'mode3rarity', 'mode4owner', 'mode4name', 'mode4rarity', 'res1owner', 'res2owner', 'res3owner', 'res4owner', 'res5owner', 'res6owner', 'res7owner', 'res8owner', 'image', 'currOwner'], 'safe'],
             [['approved', 'dateCapture'], 'number'],
         ];
@@ -68,6 +78,16 @@ class PortalSearch extends Portal
             'desc' => [Player::tableName() . '.agentId' => SORT_DESC]
         ];
 
+        $dataProvider->sort->attributes['timePassed'] = [
+            'asc' => ['dateCapture' => SORT_DESC],
+            'desc' => ['dateCapture' => SORT_ASC]
+        ];
+
+        $dataProvider->sort->attributes['formattedDateCapture'] = [
+            'asc' => ['dateCapture' => SORT_ASC],
+            'desc' => ['dateCapture' => SORT_DESC]
+        ];
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -91,8 +111,14 @@ class PortalSearch extends Portal
             ->andFilterWhere(['like', 'lng', $this->lng])
             ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', Player::tableName() . '.agentId', $this->currOwner]);
+            ->andFilterWhere(['like', Player::tableName() . '.agentId', $this->currOwner])
         ;
+
+        if (!empty($this->timePassed))
+        {
+            $query->andFilterWhere(['<', 'dateCapture', time() - ($this->timePassed - 1) * 3600 * 24]);
+            $query->andFilterWhere(['>', 'dateCapture', time() - ($this->timePassed)* 3600 * 24]);
+        }
 
         return $dataProvider;
     }

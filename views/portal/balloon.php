@@ -8,5 +8,5 @@ use yii\helpers\Html;
 
 <div><?= Html::encode($portal->title) ?></div>
 <div>Стоит уже <?= $portal->getTimePassed() ?> дней</div>
-<div>Владелец: <?= Html::encode($portal->currOwner->agentId)?></div>
+<div>Владелец: <?= Html::a(Html::encode($portal->currOwner->agentId), ['portal/index', 'PortalSearch[currOwner]' => $portal->currOwner->agentId])?></div>
 <?= Html::img($portal->image) ?>
