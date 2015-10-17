@@ -38,7 +38,7 @@ class Map extends Model
         }
         else
         {
-            $mapHtml = 'Да у этого парня протухли все порталы!';
+            $mapHtml = \Yii::$app->view->render('//portal/empty-result');
         }
         return $mapHtml;
     }
