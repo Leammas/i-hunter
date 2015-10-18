@@ -19,6 +19,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'currOwner') ?>
 
+    <?= $form->field($model, 'involved') ?>
+
     <?= $form->field($model, 'timePassed') ?>
 
     <div class="form-group">

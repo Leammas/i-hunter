@@ -30,13 +30,18 @@ class PortalSearch extends Portal
     public $formattedDateCapture;
 
     /**
+     * @var int
+     */
+    public $involved;
+
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
             [['id', 'level', 'resCount', 'res1energy', 'res1level', 'res2energy', 'res2level', 'res3energy', 'res3level', 'res4energy', 'res4level', 'res5energy', 'res5level', 'res6energy', 'res6level', 'res7energy', 'res7level', 'res8energy', 'res8level', 'currOwnerId', 'res1OwnerId', 'res2OwnerId', 'res3OwnerId', 'res4OwnerId', 'res5OwnerId', 'res6OwnerId', 'res7OwnerId', 'res8OwnerId', 'mod1OwnerId', 'mod2OwnerId', 'mod3OwnerId', 'mod4OwnerId', 'timePassed'], 'integer'],
-            [['guid', 'lat', 'lng', 'title', 'curr_owner', 'timeUpdated', 'mode1owner', 'mode1name', 'mode1rarity', 'mode2owner', 'mode2name', 'mode2rarity', 'mode3owner', 'mode3name', 'mode3rarity', 'mode4owner', 'mode4name', 'mode4rarity', 'res1owner', 'res2owner', 'res3owner', 'res4owner', 'res5owner', 'res6owner', 'res7owner', 'res8owner', 'image', 'currOwner'], 'safe'],
+            [['guid', 'lat', 'lng', 'title', 'curr_owner', 'timeUpdated', 'mode1owner', 'mode1name', 'mode1rarity', 'mode2owner', 'mode2name', 'mode2rarity', 'mode3owner', 'mode3name', 'mode3rarity', 'mode4owner', 'mode4name', 'mode4rarity', 'res1owner', 'res2owner', 'res3owner', 'res4owner', 'res5owner', 'res6owner', 'res7owner', 'res8owner', 'image', 'currOwner', 'involved'], 'safe'],
             [['approved', 'dateCapture'], 'number'],
         ];
     }
@@ -44,7 +49,8 @@ class PortalSearch extends Portal
     public function attributeLabels()
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
-            'currOwner' => 'Владелец'
+            'currOwner' => 'Владелец',
+            'involved' => 'Держал свечу (мод, рез)'
         ]);
     }
 
@@ -66,7 +72,7 @@ class PortalSearch extends Portal
      */
     public function search($params)
     {
-        $query = Portal::find()->joinWith('currOwner');
+        $query = Portal::find()->joinWith('currOwner', true, 'INNER JOIN');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -77,6 +83,11 @@ class PortalSearch extends Portal
         ]);
 
         $dataProvider->sort->attributes['currOwner'] = [
+            'asc' => [Player::tableName() . '.agentId' => SORT_ASC],
+            'desc' => [Player::tableName() . '.agentId' => SORT_DESC]
+        ];
+
+        $dataProvider->sort->attributes['involved'] = [
             'asc' => [Player::tableName() . '.agentId' => SORT_ASC],
             'desc' => [Player::tableName() . '.agentId' => SORT_DESC]
         ];
@@ -121,6 +132,37 @@ class PortalSearch extends Portal
         {
             $query->andFilterWhere(['<', 'dateCapture', time() - ($this->timePassed - 1) * 3600 * 24]);
             $query->andFilterWhere(['>', 'dateCapture', time() - ($this->timePassed)* 3600 * 24]);
+        }
+
+        if (!empty($this->involved))
+        {
+            $query->joinWith('mod1Owner')
+                ->joinWith('mod2Owner')
+                ->joinWith('mod3Owner')
+                ->joinWith('mod4Owner')
+                ->joinWith('res1Owner')
+                ->joinWith('res2Owner')
+                ->joinWith('res3Owner')
+                ->joinWith('res4Owner')
+                ->joinWith('res5Owner')
+                ->joinWith('res6Owner')
+                ->joinWith('res7Owner')
+                ->joinWith('res8Owner')
+                ->andWhere('
+            [[co.agentId]] LIKE :inv OR
+            [[pmo1.agentId]] LIKE :inv OR
+            [[pmo2.agentId]] LIKE :inv OR
+            [[pmo3.agentId]] LIKE :inv OR
+            [[pmo4.agentId]] LIKE :inv OR
+            [[pro1.agentId]] LIKE :inv OR
+            [[pro2.agentId]] LIKE :inv OR
+            [[pro3.agentId]] LIKE :inv OR
+            [[pro4.agentId]] LIKE :inv OR
+            [[pro5.agentId]] LIKE :inv OR
+            [[pro6.agentId]] LIKE :inv OR
+            [[pro7.agentId]] LIKE :inv OR
+            [[pro8.agentId]] LIKE :inv
+            ', [':inv' => $this->involved]);
         }
 
         return $dataProvider;

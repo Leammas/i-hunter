@@ -206,7 +206,7 @@ class Portal extends \yii\db\ActiveRecord
      */
     public function getCurrOwner()
     {
-        return $this->hasOne(Player::className(), ['id' => 'currOwnerId']);
+        return $this->hasOne(Player::className(), ['id' => 'currOwnerId'])->from(Player::tableName() . ' co');;
     }
 
     /**
@@ -238,6 +238,104 @@ class Portal extends \yii\db\ActiveRecord
     {
         return $this->lat . ',' . $this->lng;
     }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMod1Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'mod1OwnerId'])->from(Player::tableName() . ' pmo1');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMod2Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'mod2OwnerId'])->from(Player::tableName() . ' pmo2');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMod3Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'mod3OwnerId'])->from(Player::tableName() . ' pmo3');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMod4Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'mod4OwnerId'])->from(Player::tableName() . ' pmo4');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRes1Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'res1OwnerId'])->from(Player::tableName() . ' pro1');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRes2Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'res2OwnerId'])->from(Player::tableName() . ' pro2');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRes3Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'res3OwnerId'])->from(Player::tableName() . ' pro3');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRes4Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'res4OwnerId'])->from(Player::tableName() . ' pro4');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRes5Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'res5OwnerId'])->from(Player::tableName() . ' pro5');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRes6Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'res6OwnerId'])->from(Player::tableName() . ' pro6');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRes7Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'res7OwnerId'])->from(Player::tableName() . ' pro7');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRes8Owner()
+    {
+        return $this->hasOne(Player::className(), ['id' => 'res8OwnerId'])->from(Player::tableName() . ' pro8');
+    }
+
 
     public function getFormattedDateCapture()
     {
