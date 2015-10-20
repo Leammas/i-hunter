@@ -125,7 +125,7 @@ class PortalSearch extends Portal
             ->andFilterWhere(['like', 'lng', $this->lng])
             ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', Player::tableName() . '.agentId', $this->currOwner])
+            ->andFilterWhere(['like', 'co.agentId', $this->currOwner])
         ;
 
         if (!empty($this->timePassed))
