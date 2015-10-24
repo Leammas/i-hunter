@@ -61,7 +61,9 @@ class PortalSearch extends Portal
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
             'currOwner' => 'Владелец',
-            'involved' => 'Держал свечу (мод, рез)'
+            'involved' => 'Держал свечу (мод, рез)',
+            'point1' => 'Точка раз',
+            'point2' => 'Точка два'
         ]);
     }
 
@@ -143,6 +145,27 @@ class PortalSearch extends Portal
             $query->andFilterWhere(['>', 'dateCapture', time() - ($this->timePassed)* 3600 * 24]);
         }
 
+        if (!empty($this->point1) && !empty($this->point2))
+        {
+            if ($this->extractCoords($this->point1)[0] < $this->extractCoords($this->point2)[0])
+            {
+                $query->andWhere(['between', 'lat', $this->extractCoords($this->point1)[0], $this->extractCoords($this->point2)[0]]);
+            }
+            else
+            {
+                $query->andWhere(['between', 'lat', $this->extractCoords($this->point2)[0], $this->extractCoords($this->point1)[0]]);
+            }
+            if ($this->extractCoords($this->point1)[1] < $this->extractCoords($this->point2)[1])
+            {
+                $query->andWhere(['between', 'lng', $this->extractCoords($this->point1)[1], $this->extractCoords($this->point2)[1]]);
+            }
+            else
+            {
+                $query->andWhere(['between', 'lng', $this->extractCoords($this->point2)[1], $this->extractCoords($this->point1)[1]]);
+            }
+
+        }
+
         if (!empty($this->involved))
         {
             $query->joinWith('mod1Owner')
@@ -172,12 +195,6 @@ class PortalSearch extends Portal
             [[pro7.agentId]] = :inv OR
             [[pro8.agentId]] = :inv
             ', [':inv' => $this->involved]);
-        }
-
-        if (!empty($this->point1) && !empty($this->point2))
-        {
-            $query->andWhere(['between', 'lat', $this->extractCoords($this->point1)[0], $this->extractCoords($this->point2)[0]]);
-            $query->andWhere(['between', 'lng', $this->extractCoords($this->point1)[1], $this->extractCoords($this->point2)[1]]);
         }
 
         return $dataProvider;
