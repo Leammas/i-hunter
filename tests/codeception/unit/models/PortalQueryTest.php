@@ -37,7 +37,8 @@ class PortalQueryTest extends TestCase
     public function testPortalsByInvolved()
     {
         $this->assertCount(1, Portal::find()->portalsByInvolved(new Player(['id' => 1]))->all());
-        $this->assertCount(0, Portal::find()->portalsByInvolved(new Player(['id' => 2]))->all());
+        $this->assertCount(1, Portal::find()->portalsByInvolved(new Player(['id' => 2]))->all());
+        $this->assertCount(0, Portal::find()->portalsByInvolved(new Player(['id' => 3]))->all());
     }
 
 }

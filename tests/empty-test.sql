@@ -1,14 +1,14 @@
-CREATE TABLE IF NOT EXISTS `portals` (
-  `id` bigint(20) NOT NULL COMMENT 'индекс',
-  `guid` char(35) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'уникальный номер портала',
+CREATE TABLE IF NOT EXISTS `smurfportal` (
+  `id` bigint(20) NOT NULL COMMENT 'РёРЅРґРµРєСЃ',
+  `guid` char(35) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'СѓРЅРёРєР°Р»СЊРЅС‹Р№ РЅРѕРјРµСЂ РїРѕСЂС‚Р°Р»Р°',
   `lat` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT 'latitude',
   `lng` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT 'langitude',
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Нименование портала',
-  `approved` double DEFAULT NULL COMMENT 'Дата создания портала',
-  `curr_owner` text COLLATE utf8_unicode_ci COMMENT 'текущий владелец',
-  `level` int(11) DEFAULT NULL COMMENT 'Уровень портала',
-  `resCount` int(11) DEFAULT NULL COMMENT 'Кол-во установленных резов',
-  `dateCapture` double DEFAULT NULL COMMENT 'дата захвата',
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'РќРёРјРµРЅРѕРІР°РЅРёРµ РїРѕСЂС‚Р°Р»Р°',
+  `approved` double DEFAULT NULL COMMENT 'Р”Р°С‚Р° СЃРѕР·РґР°РЅРёСЏ РїРѕСЂС‚Р°Р»Р°',
+  `curr_owner` text COLLATE utf8_unicode_ci COMMENT 'С‚РµРєСѓС‰РёР№ РІР»Р°РґРµР»РµС†',
+  `level` int(11) DEFAULT NULL COMMENT 'РЈСЂРѕРІРµРЅСЊ РїРѕСЂС‚Р°Р»Р°',
+  `resCount` int(11) DEFAULT NULL COMMENT 'РљРѕР»-РІРѕ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹С… СЂРµР·РѕРІ',
+  `dateCapture` double DEFAULT NULL COMMENT 'РґР°С‚Р° Р·Р°С…РІР°С‚Р°',
   `timeUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `mode1owner` text COLLATE utf8_unicode_ci,
   `mode1name` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS `portals` (
   `res8energy` int(11) DEFAULT NULL,
   `res8level` int(11) DEFAULT NULL,
   `image` text COLLATE utf8_unicode_ci
-) ENGINE=InnoDB AUTO_INCREMENT=444239 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Словарь порталов';
+) ENGINE=InnoDB AUTO_INCREMENT=444239 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='РЎР»РѕРІР°СЂСЊ РїРѕСЂС‚Р°Р»РѕРІ';
 
-ALTER TABLE `portals`
+ALTER TABLE `smurfportal`
 ADD PRIMARY KEY (`id`),
 ADD UNIQUE KEY `id` (`id`),
 ADD UNIQUE KEY `guid_2` (`guid`),

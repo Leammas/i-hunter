@@ -35,13 +35,24 @@ class PortalSearch extends Portal
     public $involved;
 
     /**
+     * @var string
+     */
+    public $point1;
+
+    /**
+     * @var string
+     */
+    public $point2;
+
+
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
             [['id', 'level', 'resCount', 'res1energy', 'res1level', 'res2energy', 'res2level', 'res3energy', 'res3level', 'res4energy', 'res4level', 'res5energy', 'res5level', 'res6energy', 'res6level', 'res7energy', 'res7level', 'res8energy', 'res8level', 'currOwnerId', 'res1OwnerId', 'res2OwnerId', 'res3OwnerId', 'res4OwnerId', 'res5OwnerId', 'res6OwnerId', 'res7OwnerId', 'res8OwnerId', 'mod1OwnerId', 'mod2OwnerId', 'mod3OwnerId', 'mod4OwnerId', 'timePassed'], 'integer'],
-            [['guid', 'lat', 'lng', 'title', 'curr_owner', 'timeUpdated', 'mode1owner', 'mode1name', 'mode1rarity', 'mode2owner', 'mode2name', 'mode2rarity', 'mode3owner', 'mode3name', 'mode3rarity', 'mode4owner', 'mode4name', 'mode4rarity', 'res1owner', 'res2owner', 'res3owner', 'res4owner', 'res5owner', 'res6owner', 'res7owner', 'res8owner', 'image', 'currOwner', 'involved'], 'safe'],
+            [['guid', 'lat', 'lng', 'title', 'curr_owner', 'timeUpdated', 'mode1owner', 'mode1name', 'mode1rarity', 'mode2owner', 'mode2name', 'mode2rarity', 'mode3owner', 'mode3name', 'mode3rarity', 'mode4owner', 'mode4name', 'mode4rarity', 'res1owner', 'res2owner', 'res3owner', 'res4owner', 'res5owner', 'res6owner', 'res7owner', 'res8owner', 'image', 'currOwner', 'involved', 'point1', 'point2'], 'safe'],
             [['approved', 'dateCapture'], 'number'],
         ];
     }
@@ -121,8 +132,6 @@ class PortalSearch extends Portal
         ]);
 
         $query->andFilterWhere(['like', 'guid', $this->guid])
-            ->andFilterWhere(['like', 'lat', $this->lat])
-            ->andFilterWhere(['like', 'lng', $this->lng])
             ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'image', $this->image])
             ->andFilterWhere(['like', 'co.agentId', $this->currOwner])
@@ -149,22 +158,33 @@ class PortalSearch extends Portal
                 ->joinWith('res7Owner')
                 ->joinWith('res8Owner')
                 ->andWhere('
-            [[co.agentId]] LIKE :inv OR
-            [[pmo1.agentId]] LIKE :inv OR
-            [[pmo2.agentId]] LIKE :inv OR
-            [[pmo3.agentId]] LIKE :inv OR
-            [[pmo4.agentId]] LIKE :inv OR
-            [[pro1.agentId]] LIKE :inv OR
-            [[pro2.agentId]] LIKE :inv OR
-            [[pro3.agentId]] LIKE :inv OR
-            [[pro4.agentId]] LIKE :inv OR
-            [[pro5.agentId]] LIKE :inv OR
-            [[pro6.agentId]] LIKE :inv OR
-            [[pro7.agentId]] LIKE :inv OR
-            [[pro8.agentId]] LIKE :inv
+            [[co.agentId]] = :inv OR
+            [[pmo1.agentId]] = :inv OR
+            [[pmo2.agentId]] = :inv OR
+            [[pmo3.agentId]] = :inv OR
+            [[pmo4.agentId]] = :inv OR
+            [[pro1.agentId]] = :inv OR
+            [[pro2.agentId]] = :inv OR
+            [[pro3.agentId]] = :inv OR
+            [[pro4.agentId]] = :inv OR
+            [[pro5.agentId]] = :inv OR
+            [[pro6.agentId]] = :inv OR
+            [[pro7.agentId]] = :inv OR
+            [[pro8.agentId]] = :inv
             ', [':inv' => $this->involved]);
         }
 
+        if (!empty($this->point1) && !empty($this->point2))
+        {
+            $query->andWhere(['between', 'lat', $this->extractCoords($this->point1)[0], $this->extractCoords($this->point2)[0]]);
+            $query->andWhere(['between', 'lng', $this->extractCoords($this->point1)[1], $this->extractCoords($this->point2)[1]]);
+        }
+
         return $dataProvider;
+    }
+
+    protected function extractCoords($point)
+    {
+        return array_map('trim', explode(',', $point));
     }
 }

@@ -29,7 +29,7 @@ class PlayerQueryTest extends TestCase
     // tests
     public function testAll()
     {
-        $this->assertCount(1, Player::find()->all());
+        $this->assertCount(2, Player::find()->all());
     }
 
 }
