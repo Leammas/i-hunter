@@ -26,6 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            [
+                'class' => 'yii\grid\Column',
+                'header' => 'Ссылка на IntelMap',
+                'content' => function($model) {
+                    return Html::a('Link', $model->intelLink, ['target' => 'blank']);
+                }
+            ],
             'coord',
             'title',
             'timePassed',

@@ -70,6 +70,7 @@ use yii\helpers\Html;
  * @property integer $mod3OwnerId
  * @property integer $mod4OwnerId
  * @property string $coord
+ * @property string $intelLink
  * @property float $timePassed
  * @property string $formattedDateCapture
  *
@@ -198,6 +199,7 @@ class Portal extends \yii\db\ActiveRecord
             'coord' => 'Координата',
             'timePassed' => 'Дней с захвата',
             'formattedDateCapture' => 'Дата захвата GMT',
+            'intelLink' => 'Ссылка на IntelMap'
         ];
     }
 
@@ -336,6 +338,10 @@ class Portal extends \yii\db\ActiveRecord
         return $this->hasOne(Player::className(), ['id' => 'res8OwnerId'])->from(Player::tableName() . ' pro8');
     }
 
+    public function getIntelLink()
+    {
+        return 'https://www.ingress.com/intel?pll=' . $this->coord;
+    }
 
     public function getFormattedDateCapture()
     {
