@@ -17,7 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <h3>Щелкните на карте чтобы отметить вершины прямоугольника для фильтрации по координатам</h3>
     <? echo $map->getMap(); ?>
+
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 

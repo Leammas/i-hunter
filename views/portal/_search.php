@@ -21,7 +21,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'involved') ?>
 
+    <div>Возможен ввод интервала через дефис, например "50-90"</div>
     <?= $form->field($model, 'timePassed') ?>
+
 
     <?= $form->field($model, 'point1') ?>
 

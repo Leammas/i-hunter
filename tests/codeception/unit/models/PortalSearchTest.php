@@ -68,4 +68,11 @@ class PortalSearchTest extends TestCase
         $this->assertEquals(0, $dataProvider->totalCount);
     }
 
+    public function testByTimePassed()
+    {
+        $query = ['PortalSearch' => ['timePassed' => '1-10000']];
+        $dataProvider = $this->searchModel->search($query);
+        $this->assertEquals(1, $dataProvider->totalCount);
+    }
+
 }

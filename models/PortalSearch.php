@@ -51,8 +51,8 @@ class PortalSearch extends Portal
     public function rules()
     {
         return [
-            [['id', 'level', 'resCount', 'res1energy', 'res1level', 'res2energy', 'res2level', 'res3energy', 'res3level', 'res4energy', 'res4level', 'res5energy', 'res5level', 'res6energy', 'res6level', 'res7energy', 'res7level', 'res8energy', 'res8level', 'currOwnerId', 'res1OwnerId', 'res2OwnerId', 'res3OwnerId', 'res4OwnerId', 'res5OwnerId', 'res6OwnerId', 'res7OwnerId', 'res8OwnerId', 'mod1OwnerId', 'mod2OwnerId', 'mod3OwnerId', 'mod4OwnerId', 'timePassed'], 'integer'],
-            [['guid', 'lat', 'lng', 'title', 'curr_owner', 'timeUpdated', 'mode1owner', 'mode1name', 'mode1rarity', 'mode2owner', 'mode2name', 'mode2rarity', 'mode3owner', 'mode3name', 'mode3rarity', 'mode4owner', 'mode4name', 'mode4rarity', 'res1owner', 'res2owner', 'res3owner', 'res4owner', 'res5owner', 'res6owner', 'res7owner', 'res8owner', 'image', 'currOwner', 'involved', 'point1', 'point2'], 'safe'],
+            [['id', 'level', 'resCount', 'res1energy', 'res1level', 'res2energy', 'res2level', 'res3energy', 'res3level', 'res4energy', 'res4level', 'res5energy', 'res5level', 'res6energy', 'res6level', 'res7energy', 'res7level', 'res8energy', 'res8level', 'currOwnerId', 'res1OwnerId', 'res2OwnerId', 'res3OwnerId', 'res4OwnerId', 'res5OwnerId', 'res6OwnerId', 'res7OwnerId', 'res8OwnerId', 'mod1OwnerId', 'mod2OwnerId', 'mod3OwnerId', 'mod4OwnerId'], 'integer'],
+            [['guid', 'lat', 'lng', 'title', 'curr_owner', 'timeUpdated', 'mode1owner', 'mode1name', 'mode1rarity', 'mode2owner', 'mode2name', 'mode2rarity', 'mode3owner', 'mode3name', 'mode3rarity', 'mode4owner', 'mode4name', 'mode4rarity', 'res1owner', 'res2owner', 'res3owner', 'res4owner', 'res5owner', 'res6owner', 'res7owner', 'res8owner', 'image', 'currOwner', 'involved', 'point1', 'point2', 'timePassed'], 'safe'],
             [['approved', 'dateCapture'], 'number'],
         ];
     }
@@ -93,6 +93,11 @@ class PortalSearch extends Portal
             'pagination' => [
                 'pageSize' => 50,
             ],
+            'sort'=> [
+                'defaultOrder' => [
+                    'timePassed'=> SORT_DESC
+                ]
+            ]
         ]);
 
         $dataProvider->sort->attributes['currOwner'] = [
@@ -141,8 +146,23 @@ class PortalSearch extends Portal
 
         if (!empty($this->timePassed))
         {
-            $query->andFilterWhere(['<', 'dateCapture', time() - ($this->timePassed - 1) * 3600 * 24]);
-            $query->andFilterWhere(['>', 'dateCapture', time() - ($this->timePassed)* 3600 * 24]);
+            if (mb_strpos($this->timePassed, '-') === false)
+            {
+                $this->timePassed = (int) $this->timePassed;
+                $query->andFilterWhere(['<', 'dateCapture', time() - ($this->timePassed - 1) * 3600 * 24]);
+                $query->andFilterWhere(['>', 'dateCapture', time() - ($this->timePassed)* 3600 * 24]);
+            }
+            else
+            {
+                $data = explode('-', $this->timePassed);
+                foreach ($data as &$d)
+                {
+                    $d = (int) $d;
+                }
+                $query->andFilterWhere(['<', 'dateCapture', time() - $data[0] * 3600 * 24]);
+                $query->andFilterWhere(['>', 'dateCapture', time() - $data[1] * 3600 * 24]);
+                unset($data, $d);
+            }
         }
 
         if (!empty($this->point1) && !empty($this->point2))
@@ -204,4 +224,5 @@ class PortalSearch extends Portal
     {
         return array_map('trim', explode(',', $point));
     }
+
 }

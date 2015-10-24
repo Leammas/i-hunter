@@ -139,7 +139,7 @@ class Portal extends \yii\db\ActiveRecord
             'guid' => 'Guid',
             'lat' => 'Lat',
             'lng' => 'Lng',
-            'title' => 'Title',
+            'title' => 'Наименование портала',
             'approved' => 'Approved',
             'curr_owner' => 'Curr Owner',
             'level' => 'Level',
