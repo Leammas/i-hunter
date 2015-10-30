@@ -340,7 +340,7 @@ class Portal extends \yii\db\ActiveRecord
 
     public function getIntelLink()
     {
-        return 'https://www.ingress.com/intel?pll=' . $this->coord;
+        return 'https://www.ingress.com/intel?z=16&pll=' . $this->coord . '&ll=' . $this->coord;
     }
 
     public function getFormattedDateCapture()
