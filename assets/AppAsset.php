@@ -21,7 +21,8 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
-        'js/ymaps-select.js'
+        'js/ymaps-select.js',
+        'js/form.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

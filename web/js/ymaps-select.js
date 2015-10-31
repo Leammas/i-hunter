@@ -11,20 +11,29 @@ var ymapsSelect = (function() {
         }
         if (rect.length == 2)
         {
-            if (rectObj)
-            {
-                $Maps['yandex_map'].geoObjects.remove(rectObj);
-            }
-            rectObj = new ymaps.Rectangle([
-                rect[0],
-                rect[1]
-            ]);
-            $Maps['yandex_map'].geoObjects.add(rectObj);
-            $('input[name="PortalSearch[point1]"]').val(rect[0][0] + ', ' + rect[0][1]);
-            $('input[name="PortalSearch[point2]"]').val(rect[1][0] + ', ' + rect[1][1]);
+            renderRect(rect);
             rect = [];
         }
 
+    };
+
+    var renderRect = function (rect) {
+        if (rectObj) {
+            $Maps['yandex_map'].geoObjects.remove(rectObj);
+        }
+        rectObj = new ymaps.Rectangle(
+            rect,
+            {},
+            {
+                fillColor: '#FFD3A5FF',
+                fillOpacity: 0.5,
+                strokeColor: '#FFD3A5FF',
+                strokeOpacity: 0.5
+            }
+        );
+        $Maps['yandex_map'].geoObjects.add(rectObj);
+        $('input[name="PortalSearch[point1]"]').val(rect[0][0] + ', ' + rect[0][1]);
+        $('input[name="PortalSearch[point2]"]').val(rect[1][0] + ', ' + rect[1][1]);
     };
 
     ymaps.ready(function() {
@@ -34,11 +43,15 @@ var ymapsSelect = (function() {
                     $Maps['yandex_map'].events.add([
                         'click'
                     ], clickCallback);
+                    $(document).trigger('ymaps-select:init', $Maps);
                     clearInterval(interval);
                 }
             }
             , 200)
-
     });
+
+    return {
+        'renderRect': renderRect
+    };
 
 }());
