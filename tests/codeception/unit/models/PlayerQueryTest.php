@@ -32,4 +32,9 @@ class PlayerQueryTest extends TestCase
         $this->assertCount(2, Player::find()->all());
     }
 
+    public function testByAgent()
+    {
+        $this->assertCount(1, Player::find()->byAgent('foo')->all());
+    }
+
 }

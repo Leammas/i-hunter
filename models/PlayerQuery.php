@@ -32,4 +32,14 @@ class PlayerQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    /**
+     * @param $agent
+     * @return $this
+     */
+    public function byAgent($agent)
+    {
+        $this->andWhere(['like', 'agentId', $agent]);
+        return $this;
+    }
 }
