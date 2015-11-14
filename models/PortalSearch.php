@@ -80,7 +80,14 @@ class PortalSearch extends Portal
      */
     public function search($params)
     {
-        $query = Portal::find()->joinWith('currOwner', true, 'INNER JOIN');
+        if (empty($params))
+        {
+            $query = Portal::find()->where(0);
+        }
+        else
+        {
+            $query = Portal::find()->joinWith('currOwner', true, 'INNER JOIN');
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
