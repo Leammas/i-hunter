@@ -1,6 +1,6 @@
 <?php
 
-use kartik\widgets\Select2;
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 
     <?
     echo $form->field($model, 'currOwnerId')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'Search for a smurf with portal...'],
+        'options' => ['placeholder' => 'Search for a smurf with portal...', 'multiple' => true,],
         'pluginOptions' => [
             'allowClear' => true,
             'minimumInputLength' => 3,
@@ -40,7 +40,7 @@ use yii\widgets\ActiveForm;
 
     <?
     echo $form->field($model, 'involved')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'Search for an involved smurf ...'],
+        'options' => ['placeholder' => 'Search for a smurf with portal...', 'multiple' => true,],
         'pluginOptions' => [
             'allowClear' => true,
             'minimumInputLength' => 3,

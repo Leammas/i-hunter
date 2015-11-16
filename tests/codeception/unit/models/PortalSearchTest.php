@@ -37,22 +37,22 @@ class PortalSearchTest extends TestCase
 
     public function testByOwner()
     {
-        $query = ['PortalSearch' => ['currOwnerId' => '1']];
+        $query = ['PortalSearch' => ['currOwnerId' => [1]]];
         $dataProvider = $this->searchModel->search($query);
         $this->assertEquals(1, $dataProvider->totalCount);
         unset($query, $dataProvider);
-        $query = ['PortalSearch' => ['currOwnerId' => '-1']];
+        $query = ['PortalSearch' => ['currOwnerId' => [-1]]];
         $dataProvider = $this->searchModel->search($query);
         $this->assertEquals(0, $dataProvider->totalCount);
     }
 
     public function testByInvolved()
     {
-        $query = ['PortalSearch' => ['involved' => '2']];
+        $query = ['PortalSearch' => ['involved' => [2]]];
         $dataProvider = $this->searchModel->search($query);
         $this->assertEquals(1, $dataProvider->totalCount);
         unset($query, $dataProvider);
-        $query = ['PortalSearch' => ['involved' => '-1']];
+        $query = ['PortalSearch' => ['involved' => [-1]]];
         $dataProvider = $this->searchModel->search($query);
         $this->assertEquals(0, $dataProvider->totalCount);
     }

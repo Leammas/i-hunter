@@ -44,7 +44,7 @@ class PortalController extends Controller
         $searchModel = new PortalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $map = new MapModel(['portals' => $dataProvider]);
-
+        $searchModel->reinitEmptyArrays();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
