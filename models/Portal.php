@@ -347,4 +347,31 @@ class Portal extends \yii\db\ActiveRecord
     {
         return date('c', $this->dateCapture);
     }
+
+    /**
+     * @return string #HEX color
+     */
+    public function getIconColor()
+    {
+        if ($this->getTimePassed() <= 90)
+        {
+            $d = 255 - ceil($this->getTimePassed() / 90 * 255);
+            $result = 'FF' . $this->formatHex($d) . '00';
+        }
+        elseif ($this->getTimePassed() <= 150)
+        {
+            $d = ceil((150 - $this->getTimePassed()) / (150 - 90) * 255);
+            $result = $this->formatHex($d) . '0000';
+        }
+        else
+        {
+            $result = 'FFFFFF';
+        }
+        return '#' . $result;
+    }
+
+    protected function formatHex($dec)
+    {
+        return sprintf("%'02X", $dec);
+    }
 }

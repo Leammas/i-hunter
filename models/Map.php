@@ -72,7 +72,9 @@ class Map extends Model
             $mark = new Placemark(
                 [$portal->lat, $portal->lng],
                 ['balloonContent' => $portal->getBalloon()],
-                ['preset' => 'islands#blueStretchyIcon']);
+                [
+                    'iconColor' => $portal->getIconColor(),
+                ]);
             $map->addObject($mark);
         }
         unset($portal, $mark);
