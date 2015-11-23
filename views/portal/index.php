@@ -1,9 +1,9 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\helpers\Url;
 use app\models\Map;
+use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PortalSearch */
@@ -18,6 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <h3>Щелкните на карте чтобы отметить вершины прямоугольника для фильтрации по координатам</h3>
+
+    <div>Цвета меток соответствуют времени с захвата портала от желтого к черному через красный (0-90-150)</div>
     <? echo $map->getMap(); ?>
 
 
