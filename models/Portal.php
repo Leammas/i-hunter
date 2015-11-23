@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%portal}}".
@@ -96,6 +95,15 @@ class Portal extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return '{{%portal}}';
+    }
+
+    /**
+     * @inheritdoc
+     * @return PortalQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new PortalQuery(get_called_class());
     }
 
     /**
@@ -212,23 +220,6 @@ class Portal extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     * @return PortalQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new PortalQuery(get_called_class());
-    }
-
-    /**
-     * @return float Time passed since capture
-     */
-    public function getTimePassed()
-    {
-        return ceil(((time() - $this->dateCapture) / 3600) / 24);
-    }
-
-    /**
      * @return string Essential content
      */
     public function getBalloon()
@@ -240,7 +231,6 @@ class Portal extends \yii\db\ActiveRecord
     {
         return $this->lat . ',' . $this->lng;
     }
-
 
     /**
      * @return \yii\db\ActiveQuery
@@ -365,9 +355,17 @@ class Portal extends \yii\db\ActiveRecord
         }
         else
         {
-            $result = 'FFFFFF';
+            $result = '000000';
         }
         return '#' . $result;
+    }
+
+    /**
+     * @return float Time passed since capture
+     */
+    public function getTimePassed()
+    {
+        return ceil(((time() - $this->dateCapture) / 3600) / 24);
     }
 
     protected function formatHex($dec)
