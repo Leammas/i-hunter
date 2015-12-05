@@ -19,6 +19,9 @@ use yii\web\IdentityInterface;
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
 
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USER = 'user';
+
     public function behaviors()
     {
         return [
@@ -45,8 +48,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['email', 'key', 'role'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['key'], 'unique'],
-            [['role'], 'in', 'range' => ['user', 'admin']],
+            [['role'], 'default', 'value' => self::ROLE_USER],
             [['key'], 'default', 'value' => call_user_func([$this, 'generateToken'])],
+            [['role'], 'compare', 'compareValue' => self::ROLE_USER, 'operator' => '==='], // only users can be added for now
         ];
     }
 
@@ -142,6 +146,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function generateToken()
     {
         return mb_substr(base64_encode(openssl_random_pseudo_bytes(255)), 0, 255);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === self::ROLE_ADMIN;
     }
 
 }

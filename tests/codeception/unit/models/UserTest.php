@@ -16,8 +16,14 @@ class UserTest extends TestCase
 
     public function testDefaultKey()
     {
-        $obj = new User(['email' => 'lalam@lalam.com', 'role' => 'admin']);
+        $obj = new User(['email' => 'foo@bar.baz']);
         $obj->validate();
         $this->assertEquals(255, mb_strlen($obj->key));
+    }
+
+    public function testUsersOnly()
+    {
+        $obj = new User(['email' => 'foo@bar.baz', 'role' => User::ROLE_ADMIN]);
+        $this->assertFalse($obj->validate());
     }
 }
