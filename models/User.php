@@ -19,12 +19,13 @@ use yii\web\IdentityInterface;
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
 
-public function behaviors()
-{
-    return [
-        TimestampBehavior::className(),
-    ];
-}
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
+
 
     /**
      * @inheritdoc
@@ -44,6 +45,8 @@ public function behaviors()
             [['email', 'key', 'role'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['key'], 'unique'],
+            [['role'], 'in', 'range' => ['user', 'admin']],
+            [['key'], 'default', 'value' => call_user_func([$this, 'generateToken'])],
         ];
     }
 
@@ -132,5 +135,13 @@ public function behaviors()
         return $authKey === $this->key;
     }
 
+    /**
+     * @see http://stackoverflow.com/questions/4356289/php-random-string-generator/31107425#31107425
+     * @return string
+     */
+    public function generateToken()
+    {
+        return mb_substr(base64_encode(openssl_random_pseudo_bytes(255)), 0, 255);
+    }
 
 }

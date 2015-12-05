@@ -2,6 +2,7 @@
 
 namespace tests\codeception\unit\models;
 
+use app\models\User;
 use yii\codeception\TestCase;
 
 class UserTest extends TestCase
@@ -13,5 +14,10 @@ class UserTest extends TestCase
         //$this->loadFixtures(['user']);
     }
 
-    // TODO add test methods here
+    public function testDefaultKey()
+    {
+        $obj = new User(['email' => 'lalam@lalam.com', 'role' => 'admin']);
+        $obj->validate();
+        $this->assertEquals(255, mb_strlen($obj->key));
+    }
 }
