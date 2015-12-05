@@ -3,12 +3,28 @@ namespace app\controllers;
 
 use app\models\Player;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 
 class PlayerController extends Controller
 {
 
     public $modelClass = 'app\models\Player';
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ]
+        ];
+    }
 
     public function actionFindByAgent($agent = null, $id = null)
     {
