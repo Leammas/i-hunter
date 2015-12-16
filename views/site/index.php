@@ -8,6 +8,6 @@ $this->title = 'Ingress hunter';
 ?>
 <div class="row">
     <div class="col-sm-4">
-        <?= Html::a('Поиск портала по аттрибутам', ['portal/index']);?>
+        <?= Html::a('Поиск портала по атрибутам', ['portal/index']);?>
     </div>
 </div>
