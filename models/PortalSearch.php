@@ -88,7 +88,10 @@ class PortalSearch extends Portal
         else
         {
             $query = Portal::find()->joinWith('currOwner', true, 'INNER JOIN');
-            Yii::info('Поиск порталов пользователем ' . Yii::$app->getUser()->identity->email . ' по параметрам:' . var_export($params, true), 'user');
+            if (Yii::$app->getUser()->identity !== null)
+            {
+                Yii::info('Поиск порталов пользователем ' . Yii::$app->getUser()->identity->email . ' по параметрам:' . var_export($params, true), 'user');
+            }
         }
         // add conditions that should always apply here
 
