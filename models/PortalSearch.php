@@ -161,14 +161,22 @@ class PortalSearch extends Portal
             }
             else
             {
-                $data = explode('-', $this->timePassed);
-                foreach ($data as &$d)
+                $datas = explode(',', $this->timePassed);
+                $orQuery = [];
+                foreach ($datas as $data)
                 {
-                    $d = (int) $d;
+                    $parsedData = explode('-', $data);
+                    foreach ($parsedData as &$d)
+                    {
+                        $d = (int) $d;
+                    }
+                    $andQ = ['and',
+                        ['<', 'dateCapture', time() - $parsedData[0] * 3600 * 24],
+                        ['>', 'dateCapture', time() - $parsedData[1] * 3600 * 24]];
+                    $orQuery[] = $andQ;
                 }
-                $query->andFilterWhere(['<', 'dateCapture', time() - $data[0] * 3600 * 24]);
-                $query->andFilterWhere(['>', 'dateCapture', time() - $data[1] * 3600 * 24]);
-                unset($data, $d);
+                $query->andFilterWhere($this->reduceCondition($orQuery, []));
+                unset($datas, $data, $d);
             }
         }
 
@@ -213,6 +221,30 @@ class PortalSearch extends Portal
         }
 
         return $dataProvider;
+    }
+
+    protected function reduceCondition($toReduce, $result) {
+        while (count($toReduce) > 0) {
+            $a = array_pop($toReduce);
+            $b = array_pop($toReduce);
+            if (isset($b)) {
+                $q = ['or', $a, $b];
+
+            } else {
+                $q = ['or', $a, 0];
+            }
+            $result[] = $q;
+        }
+        $resultLength = count($result);
+        if ($resultLength > 2) {
+            return $this->reduceCondition($result, []);
+        } elseif ($resultLength === 2) {
+            return ['or', array_pop($result), array_pop($result)];
+        } elseif ($resultLength === 1) {
+            return ['or', array_pop($result), 0];
+        } else {
+            return ['or', 1, 0];
+        }
     }
 
     protected function extractCoords($point)
