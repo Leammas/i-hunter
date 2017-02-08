@@ -53,6 +53,28 @@ class PortalController extends Controller
     }
 
     /**
+     * Search form
+     * @return mixed
+     */
+    public function actionKml()
+    {
+        Yii::info("Пользователь загрузил kml " . Yii::$app->user->identity->email, 'user');
+        $headers = Yii::$app->response->headers;
+        $headers->add('Content-Type', 'application/xml');
+        $headers->add('Content-Disposition', 'attachment; filename=portals.kml');
+        $searchModel = new PortalSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel->reinitEmptyArrays();
+        $body = $this->renderPartial('indexkml', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+        Yii::$app->response->content = $body;
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        return;
+    }
+
+    /**
      * Displays a single Portal model.
      * @param string $id
      * @return mixed

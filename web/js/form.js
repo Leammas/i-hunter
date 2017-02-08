@@ -23,6 +23,13 @@ var form = (function() {
             ymapsSelect.renderRect(presets);
         });
 
+        $('.button-kml').click(function() {
+            var $form = $('.portal-search > form');
+            var action = $(this).data('formaction');
+            $form.attr('action', action);
+            $form.submit();
+        });
+
     });
 
 }());

@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title') ?>
 
-    <?
+    <?php
     echo $form->field($model, 'currOwnerId')->widget(Select2::classname(), [
         'options' => ['placeholder' => 'Search for a smurf with portal...', 'multiple' => true,],
         'pluginOptions' => [
@@ -38,7 +38,7 @@ use yii\widgets\ActiveForm;
     ]);
     ?>
 
-    <?
+    <?php
     echo $form->field($model, 'involved')->widget(Select2::classname(), [
         'options' => ['placeholder' => 'Search for a smurf with portal...', 'multiple' => true,],
         'pluginOptions' => [
@@ -68,6 +68,7 @@ use yii\widgets\ActiveForm;
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
         <?= Html::button('GeoPreset', ['class' => 'btn btn-default portal-grid-geo']) ?>
+        <?= Html::button('Get KML', ['class' => 'btn btn-primary button-kml', 'data-formaction' => Url::toRoute(['portal/kml'])]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
