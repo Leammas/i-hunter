@@ -65,7 +65,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'point2') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?= Html::button('Search', ['class' => 'btn btn-primary button-index', 'data-formaction' => Url::toRoute(['portal/index'])]) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
         <?= Html::button('GeoPreset', ['class' => 'btn btn-default portal-grid-geo']) ?>
         <?= Html::button('Get KML', ['class' => 'btn btn-primary button-kml', 'data-formaction' => Url::toRoute(['portal/kml'])]) ?>
@@ -74,3 +74,4 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+

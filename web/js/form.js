@@ -30,6 +30,13 @@ var form = (function() {
             $form.submit();
         });
 
+	$('.button-index').click(function() {
+            var $form = $('.portal-search > form');
+            var action = $(this).data('formaction');
+            $form.attr('action', action);
+            $form.submit();
+        });
+
     });
 
 }());
